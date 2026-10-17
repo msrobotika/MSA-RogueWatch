@@ -36,3 +36,5 @@ La maqueta visual de la interfaz está en [ui/index.html](ui/index.html). La pla
 
 - [Estado conectado](ui/captures/connected.svg)
 - [Estado pausado](ui/captures/paused.svg)
+
+Vistas del ESP: [Radar](ui/captures/radar.svg), [Alertas](ui/captures/alertas.svg), [Huellas](ui/captures/huellas.svg), [Evidencias](ui/captures/evidencias.svg).
