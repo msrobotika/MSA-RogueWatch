@@ -1,0 +1,2 @@
+source T:/firmware/.pio/build/roguewatch/gdbinit/symbols
+source T:/firmware/.pio/build/roguewatch/gdbinit/connect

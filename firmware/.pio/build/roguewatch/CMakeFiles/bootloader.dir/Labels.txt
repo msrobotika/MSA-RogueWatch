@@ -1,0 +1,13 @@
+# Target labels
+ bootloader
+# Source files and their labels
+T:/firmware/.pio/build/roguewatch/CMakeFiles/bootloader
+T:/firmware/.pio/build/roguewatch/CMakeFiles/bootloader.rule
+T:/firmware/.pio/build/roguewatch/CMakeFiles/bootloader-complete.rule
+T:/firmware/.pio/build/roguewatch/bootloader-prefix/src/bootloader-stamp/bootloader-build.rule
+T:/firmware/.pio/build/roguewatch/bootloader-prefix/src/bootloader-stamp/bootloader-configure.rule
+T:/firmware/.pio/build/roguewatch/bootloader-prefix/src/bootloader-stamp/bootloader-download.rule
+T:/firmware/.pio/build/roguewatch/bootloader-prefix/src/bootloader-stamp/bootloader-install.rule
+T:/firmware/.pio/build/roguewatch/bootloader-prefix/src/bootloader-stamp/bootloader-mkdir.rule
+T:/firmware/.pio/build/roguewatch/bootloader-prefix/src/bootloader-stamp/bootloader-patch.rule
+T:/firmware/.pio/build/roguewatch/bootloader-prefix/src/bootloader-stamp/bootloader-update.rule
