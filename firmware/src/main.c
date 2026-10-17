@@ -31,7 +31,9 @@ static void scan_task(void *arg){
       wifi_ap_record_t records[32]; uint16_t n=32;
       esp_wifi_scan_get_ap_records(&n,records);
       portENTER_CRITICAL(&lock);
-      state.hits=count; state.logged++; state.alert_sequence=state.logged;
+      // A scan is not itself an alert. Only the future fingerprint model may
+      // increment alert_sequence and trigger the red warning animation.
+      state.hits=count; state.logged++;
       state.rssi=n?records[0].rssi:0; state.connected=true; state.configured=true;
       strlcpy(state.ip,"PASIVO",sizeof(state.ip)); strlcpy(state.ssid,"RADAR WIFI",sizeof(state.ssid));
       portEXIT_CRITICAL(&lock);
