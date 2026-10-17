@@ -9,15 +9,16 @@
   footer{margin-top:18px;color:#6f9aa8;font-size:12px}.actions{margin-top:14px;display:flex;gap:8px}.actions button{background:#123b4b;color:#d9f7ff;border:1px solid #22d7e8;border-radius:7px;padding:8px 12px;cursor:pointer}.status{color:#ffd166;margin-top:8px;font-size:12px}
 </style>
 <main class="screen"><h1>MSA_RogueWatch</h1><div class="sub">PASSIVE WIRELESS DEFENDER · v0.1</div>
-<section class="grid"><div class="card"><div>RADAR</div><div class="big ok">SCANNING</div><div>2.4 GHz · 11 redes</div><div class="bar"><i></i></div></div>
-<div class="card"><div>ALERTAS</div><div class="big warn">0</div><div>sin actividad sospechosa</div></div>
+<section class="grid"><div class="card"><div>RADAR</div><div id="radar" class="big ok">SCANNING</div><div id="radarInfo">2.4 GHz · 11 redes</div><div class="bar"><i id="bar"></i></div></div>
+<div class="card"><div>ALERTAS</div><div id="alerts" class="big warn">0</div><div>sin actividad sospechosa</div></div>
 <div class="card"><div>HUELLAS</div><div class="big">27</div><div>dispositivos observados</div></div>
 <div class="card"><div>CONTROLES</div><div>BOOT: cambiar vista</div><div>BOOT 2s: pausar</div></div></section>
 <div class="actions"><button id="connect">Conectar USB</button><button id="pause">Pausa / reanuda</button></div><div class="status" id="status">USB sin conectar</div>
 <footer>interfaz serie Web Serial · pantalla ST7789 · sin táctil</footer></main>
 <script>
-let port,writer,reader;
+let port,writer,reader,paused=false;
 const status=document.querySelector('#status');
-document.querySelector('#connect').onclick=async()=>{try{port=await navigator.serial.requestPort();await port.open({baudRate:115200});status.textContent='USB conectado · esperando RogueWatch';reader=port.readable.getReader();const dec=new TextDecoder();let buf='';while(true){const {value,done}=await reader.read();if(done)break;buf+=dec.decode(value);let lines=buf.split(/\r?\n/);buf=lines.pop();for(const line of lines){if(line.includes('ROGUEWATCH'))status.textContent='ESP32: '+line;}}}catch(e){status.textContent='No se pudo abrir el puerto: '+e.message;}};
-document.querySelector('#pause').onclick=async()=>{if(!port?.writable){status.textContent='Conecta primero el USB';return}writer=port.writable.getWriter();await writer.write(new TextEncoder().encode('p\n'));writer.releaseLock();status.textContent='Orden de pausa enviada al ESP32';};
+document.querySelector('#connect').onclick=async()=>{try{port=await navigator.serial.requestPort();await port.open({baudRate:115200});status.textContent='● USB conectado · ESP32 online';document.querySelector('#radarInfo').textContent='telemetría serie activa';document.querySelector('#bar').style.width='92%';reader=port.readable.getReader();const dec=new TextDecoder();let buf='';while(true){const {value,done}=await reader.read();if(done)break;buf+=dec.decode(value);let lines=buf.split(/\r?\n/);buf=lines.pop();for(const line of lines){if(line.includes('ROGUEWATCH_PAUSED=1')){paused=true;paint();}if(line.includes('ROGUEWATCH_PAUSED=0')){paused=false;paint();}if(line.includes('ROGUEWATCH'))status.textContent='● ESP32: '+line;}}}catch(e){status.textContent='No se pudo abrir el puerto: '+e.message;}};
+function paint(){document.querySelector('#radar').textContent=paused?'PAUSED':'SCANNING';document.querySelector('#radar').className='big '+(paused?'warn':'ok');document.querySelector('#pause').textContent=paused?'Reanudar escaneo':'Pausa / reanuda';status.textContent=paused?'Ⅱ Escaneo pausado':'▶ Escaneo activo';}
+document.querySelector('#pause').onclick=async()=>{if(!port?.writable){status.textContent='Conecta primero el USB';return}paused=!paused;paint();writer=port.writable.getWriter();await writer.write(new TextEncoder().encode('p\n'));writer.releaseLock();};
 </script>
