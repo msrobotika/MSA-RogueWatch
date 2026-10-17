@@ -16,6 +16,18 @@ static portMUX_TYPE lock = portMUX_INITIALIZER_UNLOCKED;
 static uint8_t mac[6];
 static volatile bool paused;
 
+static void command_task(void *arg){
+  (void)arg;
+  while(1){
+    int c=getchar();
+    if(c=='p' || c=='P'){
+      canary_toggle();
+      printf("ROGUEWATCH_PAUSED=%d\\n", paused?1:0); fflush(stdout);
+    }
+    vTaskDelay(pdMS_TO_TICKS(10));
+  }
+}
+
 void canary_snapshot(snapshot_t *out){portENTER_CRITICAL(&lock);*out=state;portEXIT_CRITICAL(&lock);out->uptime=(uint32_t)(esp_timer_get_time()/1000000);out->heap=esp_get_free_heap_size();out->armed=!paused;}
 void canary_toggle(void){paused=!paused;}
 void canary_save_display(int profile,bool invert){(void)profile;(void)invert;}
@@ -56,5 +68,6 @@ void app_main(void){
   ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA)); ESP_ERROR_CHECK(esp_wifi_start()); esp_wifi_set_ps(WIFI_PS_NONE);
   printf("ROGUEWATCH_READY\\n"); fflush(stdout);
   xTaskCreate(scan_task,"roguewatch_scan",4096,NULL,4,NULL);
+  xTaskCreate(command_task,"roguewatch_cmd",2048,NULL,3,NULL);
   while(1){vTaskDelay(pdMS_TO_TICKS(1000));}
 }
