@@ -31,3 +31,8 @@ MIT.
 ## Vista previa
 
 La maqueta visual de la interfaz está en [ui/index.html](ui/index.html). La placa usa la misma idea de cuatro vistas, controladas con BOOT; consulta [docs/CONTROLS.md](docs/CONTROLS.md).
+
+### Capturas
+
+- [Estado conectado](ui/captures/connected.svg)
+- [Estado pausado](ui/captures/paused.svg)
