@@ -1,4 +1,5 @@
 #include <string.h>
+#include <stdio.h>
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "esp_wifi.h"
@@ -46,9 +47,14 @@ void app_main(void){
   memset(&state,0,sizeof(state)); esp_read_mac(mac,ESP_MAC_WIFI_STA);
   strlcpy(state.ip,"PASIVO",sizeof(state.ip)); strlcpy(state.ssid,"RADAR WIFI",sizeof(state.ssid));
   display_start(0,true);
+  printf("ROGUEWATCH_DISPLAY_READY\\n"); fflush(stdout);
+#if defined(ROGUEWATCH_DISPLAY_ONLY)
+  while(1){vTaskDelay(pdMS_TO_TICKS(1000));}
+#endif
   ESP_ERROR_CHECK(esp_netif_init()); ESP_ERROR_CHECK(esp_event_loop_create_default()); esp_netif_create_default_wifi_sta();
   wifi_init_config_t cfg=WIFI_INIT_CONFIG_DEFAULT(); ESP_ERROR_CHECK(esp_wifi_init(&cfg));
   ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA)); ESP_ERROR_CHECK(esp_wifi_start()); esp_wifi_set_ps(WIFI_PS_NONE);
+  printf("ROGUEWATCH_READY\\n"); fflush(stdout);
   xTaskCreate(scan_task,"roguewatch_scan",4096,NULL,4,NULL);
   while(1){vTaskDelay(pdMS_TO_TICKS(1000));}
 }

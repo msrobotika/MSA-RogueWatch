@@ -27,3 +27,7 @@ Prototipo inicial para ESP32 clásico con pantalla y registro opcional en microS
 ## Licencia
 
 MIT.
+
+## Vista previa
+
+La maqueta visual de la interfaz está en [ui/index.html](ui/index.html). La placa usa la misma idea de cuatro vistas, controladas con BOOT; consulta [docs/CONTROLS.md](docs/CONTROLS.md).
