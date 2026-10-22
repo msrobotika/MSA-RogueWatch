@@ -1,5 +1,11 @@
 # MSA-RogueWatch
 
+> **MS ROBOTIKA · Prototipo de laboratorio** · [Estado y límites](docs/PROJECT_STATUS.md) · [Evidencias de interfaz](ui/captures/) · [Seguridad](SECURITY.md)
+
+![Vista de radar de la interfaz prototipo MSA-RogueWatch](ui/captures/radar.png)
+
+*Vista de demostración de la interfaz. No implica validación de detección sobre hardware ni prueba de intrusión.*
+
 Detector portátil y pasivo de puntos de acceso sospechosos para laboratorios de ciberseguridad. Aprende la huella de una red autorizada y avisa cuando detecta un SSID clonado, un BSSID nuevo o una configuración de seguridad inesperada.
 
 ## Qué detecta
