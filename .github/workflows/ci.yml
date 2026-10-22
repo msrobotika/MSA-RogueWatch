@@ -1,0 +1,29 @@
+name: RogueWatch · clean-source integrity
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-integrity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Ensure no generated PlatformIO build files in Git index
+        run: |
+          if git ls-files 'firmware/.pio/*' | grep .; then
+            echo 'Generated PlatformIO files must not be committed' >&2
+            exit 1
+          fi
+          test -f firmware/platformio.ini
+          test -f firmware/src/main.c
+          test -f firmware/src/display.c
+          python -m py_compile tools/make_captures.py
+      - name: State hardware-validation boundary
+        run: echo 'Repository integrity only. ESP32 firmware build, radio behavior and physical display are not verified here.'
