@@ -1,0 +1,47 @@
+name: "Informe de incidencia"
+description: "Reportar un error reproducible sin datos privados"
+title: "[Bug] "
+body:
+  - type: markdown
+    attributes:
+      value: "No incluyas contraseñas, tokens, datos clínicos identificables ni detalles de vulnerabilidades. Para seguridad sigue SECURITY.md."
+  - type: input
+    id: version
+    attributes:
+      label: "Versión o SHA del commit"
+    validations:
+      required: true
+  - type: dropdown
+    id: evidence
+    attributes:
+      label: "Entorno donde se observó"
+      options:
+        - "Simulación / demo"
+        - "Navegador real"
+        - "Prueba automatizada"
+        - "Hardware físico autorizado"
+        - "Sin verificar"
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: "Pasos mínimos para reproducir"
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: "Resultado esperado"
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: "Resultado observado y evidencia depurada"
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: "Qué no se ha comprobado"
